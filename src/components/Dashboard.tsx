@@ -1,9 +1,8 @@
-
 import React from "react";
 import { ArrowUpRight, ArrowDownRight, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PriceCard from "@/components/ui/PriceCard";
-import Chart from "@/components/ui/Chart";
+import { Chart } from "@/components/ui/chart";
 
 const marketData = [
   {

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import {
@@ -16,7 +15,7 @@ import {
 } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Chart from "@/components/ui/Chart";
+import { Chart } from "@/components/ui/chart";
 
 const timeframes = ["1D", "1W", "1M", "1Y", "All"];
 
