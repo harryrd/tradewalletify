@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import {
@@ -15,9 +16,32 @@ import {
 } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Chart } from "@/components/ui/chart";
+import { 
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent
+} from "@/components/ui/chart";
+import { 
+  BarChart, 
+  Bar, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  XAxis,
+  YAxis 
+} from "recharts";
 
 const timeframes = ["1D", "1W", "1M", "1Y", "All"];
+
+const candlestickData = [
+  { name: "Jan", value: 4000 },
+  { name: "Feb", value: 3000 },
+  { name: "Mar", value: 5000 },
+  { name: "Apr", value: 2780 },
+  { name: "May", value: 1890 },
+  { name: "Jun", value: 2390 },
+  { name: "Jul", value: 3490 },
+];
 
 const Trading = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState("1D");
@@ -68,7 +92,31 @@ const Trading = () => {
 
       {/* Price Chart */}
       <div className="h-72 w-full">
-        <Chart type="candlestick" color="#0052FE" />
+        <ChartContainer config={{ bar: { color: "#0052FE" } }}>
+          <BarChart
+            data={candlestickData}
+            margin={{
+              top: 10,
+              right: 10,
+              left: 0,
+              bottom: 10,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" className="chart-grid" />
+            <XAxis 
+              dataKey="name" 
+              tick={{ fontSize: 12 }} 
+              axisLine={false}
+              tickLine={false}
+            />
+            <YAxis 
+              hide 
+              domain={['dataMin - 500', 'dataMax + 500']} 
+            />
+            <ChartTooltip content={<ChartTooltipContent />} />
+            <Bar dataKey="value" fill="#0052FE" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ChartContainer>
       </div>
 
       {/* Trading Tabs */}

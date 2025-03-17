@@ -1,8 +1,22 @@
+
 import React from "react";
 import { ArrowUpRight, ArrowDownRight, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PriceCard from "@/components/ui/PriceCard";
-import { Chart } from "@/components/ui/chart";
+import { 
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent
+} from "@/components/ui/chart";
+import { 
+  AreaChart, 
+  Area, 
+  CartesianGrid,
+  Tooltip, 
+  ResponsiveContainer,
+  XAxis,
+  YAxis
+} from "recharts";
 
 const marketData = [
   {
@@ -39,6 +53,16 @@ const marketData = [
   },
 ];
 
+const chartData = [
+  { name: "Jan", value: 4000 },
+  { name: "Feb", value: 3000 },
+  { name: "Mar", value: 5000 },
+  { name: "Apr", value: 2780 },
+  { name: "May", value: 1890 },
+  { name: "Jun", value: 2390 },
+  { name: "Jul", value: 3490 },
+];
+
 const Dashboard = () => {
   return (
     <div className="py-8 space-y-8">
@@ -69,7 +93,41 @@ const Dashboard = () => {
         </div>
         
         <div className="aspect-[16/9]">
-          <Chart type="area" color="#0052FE" />
+          <ChartContainer config={{ area: { color: "#0052FE" } }}>
+            <AreaChart
+              data={chartData}
+              margin={{
+                top: 10,
+                right: 10,
+                left: 0,
+                bottom: 0,
+              }}
+            >
+              <defs>
+                <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#0052FE" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#0052FE" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <XAxis 
+                dataKey="name" 
+                tick={false}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis hide domain={['dataMin - 500', 'dataMax + 500']} />
+              <CartesianGrid strokeDasharray="3 3" className="chart-grid" vertical={false} />
+              <ChartTooltip content={<ChartTooltipContent />} />
+              <Area 
+                type="monotone" 
+                dataKey="value" 
+                stroke="#0052FE" 
+                strokeWidth={2}
+                fillOpacity={1} 
+                fill="url(#colorGradient)" 
+              />
+            </AreaChart>
+          </ChartContainer>
         </div>
         
         <div className="flex gap-3">
