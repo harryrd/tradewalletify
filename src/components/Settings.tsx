@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   User,
@@ -13,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import SecuritySettings from "./SecuritySettings";
 import ProfileSettings from "./ProfileSettings";
+import PaymentSettings from "./PaymentSettings";
 
 const settingsGroups = [
   {
@@ -65,17 +65,14 @@ const Settings = () => {
     setActiveSection(sectionId === activeSection ? null : sectionId);
   };
 
-  // Show the main settings list if no section is active
   if (!activeSection) {
     return (
       <div className="py-8 space-y-6">
-        {/* Header */}
         <div>
           <h1 className="text-2xl font-semibold">Settings</h1>
           <p className="text-muted-foreground text-sm">Manage your account and app preferences</p>
         </div>
 
-        {/* Profile Card */}
         <div className="crypto-card flex items-center gap-4">
           <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
             <User size={28} className="text-primary" />
@@ -86,7 +83,6 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Settings Groups */}
         <div className="space-y-6">
           {settingsGroups.map((group) => (
             <div key={group.id} className="space-y-2">
@@ -120,7 +116,6 @@ const Settings = () => {
           ))}
         </div>
 
-        {/* Logout Button */}
         <Button
           variant="outline"
           className="w-full gap-2 mt-8 border-destructive/30 text-destructive hover:bg-destructive/5"
@@ -132,7 +127,6 @@ const Settings = () => {
     );
   }
 
-  // Show the respective section component based on activeSection
   if (activeSection === "profile") {
     return <ProfileSettings onBack={() => setActiveSection(null)} />;
   }
@@ -141,7 +135,10 @@ const Settings = () => {
     return <SecuritySettings onBack={() => setActiveSection(null)} />;
   }
 
-  // For other sections, show a placeholder (these would be implemented similarly to SecuritySettings)
+  if (activeSection === "payment") {
+    return <PaymentSettings onBack={() => setActiveSection(null)} />;
+  }
+
   return (
     <div className="py-8 space-y-6">
       <Button variant="ghost" onClick={() => setActiveSection(null)} className="mb-4">
