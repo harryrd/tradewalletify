@@ -17,16 +17,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { 
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent
-} from "@/components/ui/chart";
-import { 
   BarChart, 
   Bar, 
   CartesianGrid, 
   Tooltip, 
-  ResponsiveContainer,
   XAxis,
   YAxis 
 } from "recharts";
@@ -45,55 +39,78 @@ const candlestickData = [
 
 const Trading = () => {
   const [selectedTimeframe, setSelectedTimeframe] = useState("1D");
-  
+
   return (
     <div className="py-8 space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold">BTC/USD</h1>
-          <div className="text-sm font-medium bg-secondary px-2 py-1 rounded-md flex items-center">
-            <span>Bitcoin</span>
-            <ChevronDown size={16} className="ml-1 text-muted-foreground" />
-          </div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Trading</h1>
+        <div className="relative">
+          <Input
+            type="text"
+            placeholder="Search coins..."
+            className="pr-8 w-44"
+          />
+          <Search className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         </div>
-        <Button size="icon" variant="outline" className="rounded-full">
-          <Search size={18} />
-        </Button>
       </div>
 
-      {/* Price Info */}
-      <div className="space-y-2">
-        <div className="flex items-end gap-2">
-          <h2 className="text-3xl font-bold">$42,361.24</h2>
-          <div className="flex items-center text-crypto-green text-sm font-medium pb-1">
-            <span>+2.34%</span>
+      {/* Trading Pair Selection */}
+      <div className="crypto-card flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">B</div>
+          <div>
+            <div className="flex items-center gap-1">
+              <span className="font-medium">Bitcoin</span>
+              <span className="text-muted-foreground font-mono">BTC</span>
+            </div>
+            <p className="text-sm">$42,756.83</p>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground">May 7, 2023, 12:30 PM</p>
+        <Select defaultValue="usd">
+          <SelectTrigger className="w-24">
+            <SelectValue placeholder="USD" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="usd">USD</SelectItem>
+            <SelectItem value="eur">EUR</SelectItem>
+            <SelectItem value="gbp">GBP</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* Chart Timeframe Selector */}
-      <div className="flex overflow-x-auto no-scrollbar py-2">
-        {timeframes.map((timeframe) => (
-          <button
-            key={timeframe}
-            className={`px-4 py-2 text-sm font-medium rounded-lg mr-2 transition-colors ${
-              selectedTimeframe === timeframe
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary text-foreground"
-            }`}
-            onClick={() => setSelectedTimeframe(timeframe)}
-          >
-            {timeframe}
-          </button>
-        ))}
+      {/* Price and Timeframe */}
+      <div className="crypto-card">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <p className="text-muted-foreground text-sm">Current Price</p>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-semibold">$42,756.83</span>
+              <span className="text-green-500 text-sm">+1.2%</span>
+            </div>
+          </div>
+          <div className="flex gap-1 bg-secondary/50 p-1 rounded-lg">
+            {timeframes.map((timeframe) => (
+              <Button
+                key={timeframe}
+                variant={selectedTimeframe === timeframe ? "default" : "ghost"}
+                size="sm"
+                className={`text-xs px-3 ${selectedTimeframe === timeframe ? "" : "text-muted-foreground"}`}
+                onClick={() => setSelectedTimeframe(timeframe)}
+              >
+                {timeframe}
+              </Button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Price Chart */}
       <div className="h-72 w-full">
-        <ChartContainer config={{ bar: { color: "#0052FE" } }}>
+        <div className="w-full h-full">
           <BarChart
+            width={800}
+            height={288}
             data={candlestickData}
             margin={{
               top: 10,
@@ -113,86 +130,135 @@ const Trading = () => {
               hide 
               domain={['dataMin - 500', 'dataMax + 500']} 
             />
-            <ChartTooltip content={<ChartTooltipContent />} />
+            <Tooltip
+              contentStyle={{
+                background: "rgba(17, 24, 39, 0.9)",
+                border: "none",
+                borderRadius: "8px",
+                boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                padding: "8px"
+              }}
+              itemStyle={{ color: "#fff" }}
+              formatter={(value: number) => [`$${value}`, "Value"]}
+              labelFormatter={(label) => `${label}`}
+            />
             <Bar dataKey="value" fill="#0052FE" radius={[4, 4, 0, 0]} />
           </BarChart>
-        </ChartContainer>
+        </div>
       </div>
 
       {/* Trading Tabs */}
       <Tabs defaultValue="buy" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-4">
-          <TabsTrigger value="buy">Buy</TabsTrigger>
-          <TabsTrigger value="sell">Sell</TabsTrigger>
-          <TabsTrigger value="convert">Convert</TabsTrigger>
+        <TabsList className="w-full mb-4">
+          <TabsTrigger value="buy" className="flex-1">Buy</TabsTrigger>
+          <TabsTrigger value="sell" className="flex-1">Sell</TabsTrigger>
+          <TabsTrigger value="convert" className="flex-1">Convert</TabsTrigger>
         </TabsList>
+        
         <TabsContent value="buy" className="space-y-4">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-sm">Pay with</span>
-                <span className="text-sm text-muted-foreground">Balance: $5,400.00</span>
+          <div className="crypto-card">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Amount</label>
+                <div className="flex">
+                  <Input type="number" placeholder="0.00" className="rounded-r-none" />
+                  <div className="bg-secondary flex items-center px-3 rounded-r-md border border-l-0 border-input">
+                    <span className="font-medium mr-1">USD</span>
+                    <ChevronDown size={16} />
+                  </div>
+                </div>
               </div>
-              <div className="flex h-12 w-full rounded-lg border bg-background px-3 items-center">
-                <Input
-                  type="number"
-                  placeholder="0.00"
-                  className="border-0 bg-transparent h-10 p-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-right flex-1"
-                />
-                <Select defaultValue="usd">
-                  <SelectTrigger className="border-0 w-24 p-0 h-8 ml-2 focus:ring-0">
-                    <SelectValue placeholder="USD" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="usd">USD</SelectItem>
-                    <SelectItem value="eur">EUR</SelectItem>
-                    <SelectItem value="gbp">GBP</SelectItem>
-                  </SelectContent>
-                </Select>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium">You'll receive</label>
+                <div className="flex">
+                  <Input 
+                    type="number" 
+                    placeholder="0.00" 
+                    className="rounded-r-none bg-muted pointer-events-none" 
+                    readOnly
+                  />
+                  <div className="bg-secondary flex items-center px-3 rounded-r-md border border-l-0 border-input">
+                    <span className="font-medium mr-1">BTC</span>
+                    <ChevronDown size={16} />
+                  </div>
+                </div>
               </div>
             </div>
             
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-sm">You receive</span>
-                <span className="text-sm text-muted-foreground">1 BTC ≈ $42,361.24</span>
-              </div>
-              <div className="flex h-12 w-full rounded-lg border bg-background px-3 items-center">
-                <Input
-                  type="number"
-                  placeholder="0.00"
-                  className="border-0 bg-transparent h-10 p-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-right flex-1"
-                />
-                <Select defaultValue="btc">
-                  <SelectTrigger className="border-0 w-24 p-0 h-8 ml-2 focus:ring-0">
-                    <SelectValue placeholder="BTC" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="btc">BTC</SelectItem>
-                    <SelectItem value="eth">ETH</SelectItem>
-                    <SelectItem value="sol">SOL</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+            <Button className="w-full mt-6">Buy Bitcoin</Button>
           </div>
-          
-          <Button className="w-full rounded-xl bg-crypto-blue h-12">
-            Buy Bitcoin
-          </Button>
         </TabsContent>
         
         <TabsContent value="sell" className="space-y-4">
-          {/* Sell content similar to buy but reversed */}
-          <div className="text-center text-muted-foreground py-8">
-            Sell functionality would mirror the buy interface
+          <div className="crypto-card">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Amount</label>
+                <div className="flex">
+                  <Input type="number" placeholder="0.00" className="rounded-r-none" />
+                  <div className="bg-secondary flex items-center px-3 rounded-r-md border border-l-0 border-input">
+                    <span className="font-medium mr-1">BTC</span>
+                    <ChevronDown size={16} />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium">You'll receive</label>
+                <div className="flex">
+                  <Input 
+                    type="number" 
+                    placeholder="0.00" 
+                    className="rounded-r-none bg-muted pointer-events-none" 
+                    readOnly
+                  />
+                  <div className="bg-secondary flex items-center px-3 rounded-r-md border border-l-0 border-input">
+                    <span className="font-medium mr-1">USD</span>
+                    <ChevronDown size={16} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <Button variant="outline" className="w-full mt-6 border-destructive/30 text-destructive hover:bg-destructive/5">
+              Sell Bitcoin
+            </Button>
           </div>
         </TabsContent>
         
         <TabsContent value="convert" className="space-y-4">
-          {/* Convert content */}
-          <div className="text-center text-muted-foreground py-8">
-            Convert between cryptocurrencies directly
+          <div className="crypto-card">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">From</label>
+                <div className="flex">
+                  <Input type="number" placeholder="0.00" className="rounded-r-none" />
+                  <div className="bg-secondary flex items-center px-3 rounded-r-md border border-l-0 border-input">
+                    <span className="font-medium mr-1">BTC</span>
+                    <ChevronDown size={16} />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium">To</label>
+                <div className="flex">
+                  <Input 
+                    type="number" 
+                    placeholder="0.00" 
+                    className="rounded-r-none bg-muted pointer-events-none" 
+                    readOnly
+                  />
+                  <div className="bg-secondary flex items-center px-3 rounded-r-md border border-l-0 border-input">
+                    <span className="font-medium mr-1">ETH</span>
+                    <ChevronDown size={16} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <Button className="w-full mt-6">Convert</Button>
           </div>
         </TabsContent>
       </Tabs>

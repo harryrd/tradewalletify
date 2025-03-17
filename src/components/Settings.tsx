@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import SecuritySettings from "./SecuritySettings";
+import ProfileSettings from "./ProfileSettings";
 
 const settingsGroups = [
   {
@@ -132,6 +133,10 @@ const Settings = () => {
   }
 
   // Show the respective section component based on activeSection
+  if (activeSection === "profile") {
+    return <ProfileSettings onBack={() => setActiveSection(null)} />;
+  }
+  
   if (activeSection === "security") {
     return <SecuritySettings onBack={() => setActiveSection(null)} />;
   }
