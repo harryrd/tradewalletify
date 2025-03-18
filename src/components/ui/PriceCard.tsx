@@ -14,7 +14,7 @@ const PriceCard = ({ name, code, price, change, icon }: PriceCardProps) => {
   const isPositive = change >= 0;
   
   return (
-    <div className="crypto-card flex items-center justify-between">
+    <div className="crypto-card flex items-center justify-between p-4 hover:shadow-md transition-all duration-200">
       <div className="flex items-center gap-3">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center"
