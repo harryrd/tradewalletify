@@ -10,6 +10,7 @@ import {
   XAxis,
   YAxis
 } from "recharts";
+import CustomChart from "@/components/ui/custom-chart";
 
 const marketData = [
   {
@@ -53,15 +54,10 @@ const Dashboard = () => {
     <div className="py-8 space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold">Welcome back</h1>
-          <p className="text-muted-foreground text-sm">Track your portfolio and trading activity</p>
-        </div>
-        <div>
-          <Button variant="outline" size="icon" className="rounded-full">
-            <Bell size={18} />
-          </Button>
-        </div>
+        <h1 className="text-2xl font-semibold">Welcome back</h1>
+        <Button variant="outline" size="icon" className="rounded-full">
+          <Bell size={18} />
+        </Button>
       </div>
       
       {/* Main Chart */}
@@ -78,54 +74,7 @@ const Dashboard = () => {
         </div>
         
         <div className="aspect-[16/9]">
-          <div className="w-full h-full">
-            <AreaChart
-              width={800}
-              height={300}
-              data={chartData}
-              margin={{
-                top: 10,
-                right: 10,
-                left: 0,
-                bottom: 0,
-              }}
-            >
-              <defs>
-                <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0052FE" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#0052FE" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis 
-                dataKey="name" 
-                tick={false}
-                axisLine={false}
-                tickLine={false}
-              />
-              <YAxis hide domain={['dataMin - 500', 'dataMax + 500']} />
-              <CartesianGrid strokeDasharray="3 3" className="chart-grid" vertical={false} />
-              <Tooltip
-                contentStyle={{
-                  background: "rgba(17, 24, 39, 0.9)",
-                  border: "none",
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                  padding: "8px"
-                }}
-                itemStyle={{ color: "#fff" }}
-                formatter={(value: number) => [`$${value}`, "Value"]}
-                labelFormatter={(label) => `${label}`}
-              />
-              <Area 
-                type="monotone" 
-                dataKey="value" 
-                stroke="#0052FE" 
-                strokeWidth={2}
-                fillOpacity={1} 
-                fill="url(#colorGradient)" 
-              />
-            </AreaChart>
-          </div>
+          <CustomChart type="area" color="#0052FE" />
         </div>
         
         <div className="flex gap-3">

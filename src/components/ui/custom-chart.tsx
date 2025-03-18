@@ -29,12 +29,12 @@ const data = [
   { name: "Dec", value: 3890 },
 ];
 
-interface ChartProps {
+interface CustomChartProps {
   type?: "line" | "area" | "bar" | "candlestick";
   color?: string;
 }
 
-const Chart = ({ type = "line", color = "#0052FE" }: ChartProps) => {
+const CustomChart = ({ type = "line", color = "#0052FE" }: CustomChartProps) => {
   if (type === "candlestick") {
     // For candlestick, we'll simulate with a bar chart for now
     return (
@@ -205,4 +205,4 @@ const Chart = ({ type = "line", color = "#0052FE" }: ChartProps) => {
   );
 };
 
-export default Chart;
+export default CustomChart;
