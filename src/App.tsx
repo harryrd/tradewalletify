@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Market from "./components/Market";
 import Trading from "./components/Trading";
 import Wallet from "./components/Wallet";
 import Settings from "./components/Settings";
@@ -21,7 +22,12 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/trading" element={
+          <Route path="/market" element={
+            <Layout>
+              <Market />
+            </Layout>
+          } />
+          <Route path="/trading/:cryptoId" element={
             <Layout>
               <Trading />
             </Layout>
@@ -36,7 +42,6 @@ const App = () => (
               <Settings />
             </Layout>
           } />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

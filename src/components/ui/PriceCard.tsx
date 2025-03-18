@@ -8,10 +8,12 @@ interface PriceCardProps {
   price: number;
   change: number;
   icon: string;
+  priceFormatter?: (price: number) => string;
 }
 
-const PriceCard = ({ name, code, price, change, icon }: PriceCardProps) => {
+const PriceCard = ({ name, code, price, change, icon, priceFormatter }: PriceCardProps) => {
   const isPositive = change >= 0;
+  const formattedPrice = priceFormatter ? priceFormatter(price) : price.toLocaleString();
   
   return (
     <div className="crypto-card flex items-center justify-between p-4 hover:shadow-md transition-all duration-200">
@@ -26,11 +28,11 @@ const PriceCard = ({ name, code, price, change, icon }: PriceCardProps) => {
         </div>
         <div>
           <p className="font-medium">{name}</p>
-          <p className="text-sm text-muted-foreground">{code}/USD</p>
+          <p className="text-sm text-muted-foreground">{code}/IDR</p>
         </div>
       </div>
       <div className="text-right">
-        <p className="font-medium">${price.toLocaleString()}</p>
+        <p className="font-medium">{formattedPrice}</p>
         <div
           className={`text-sm flex items-center justify-end ${
             isPositive ? "text-green-500" : "text-red-500"

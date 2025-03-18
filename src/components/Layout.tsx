@@ -12,7 +12,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   const navItems = [
     { path: "/", icon: Home, label: "Home" },
-    { path: "/trading", icon: BarChart2, label: "Trading" },
+    { path: "/market", icon: BarChart2, label: "Market" },
     { path: "/wallet", icon: Wallet, label: "Wallet" },
     { path: "/settings", icon: Settings, label: "Settings" },
   ];
