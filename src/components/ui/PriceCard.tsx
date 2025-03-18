@@ -4,13 +4,13 @@ import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 
 interface PriceCardProps {
   name: string;
-  symbol: string;
+  code: string;
   price: number;
   change: number;
-  color: string;
+  icon: string;
 }
 
-const PriceCard = ({ name, symbol, price, change, color }: PriceCardProps) => {
+const PriceCard = ({ name, code, price, change, icon }: PriceCardProps) => {
   const isPositive = change >= 0;
   
   return (
@@ -18,22 +18,22 @@ const PriceCard = ({ name, symbol, price, change, color }: PriceCardProps) => {
       <div className="flex items-center gap-3">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center"
-          style={{ backgroundColor: `${color}20` }}
+          style={{ backgroundColor: `#0052FE20` }}
         >
-          <span className="font-semibold text-sm" style={{ color }}>
-            {symbol}
+          <span className="font-semibold text-sm" style={{ color: "#0052FE" }}>
+            {code.substring(0, 3)}
           </span>
         </div>
         <div>
           <p className="font-medium">{name}</p>
-          <p className="text-sm text-muted-foreground">{symbol}/USD</p>
+          <p className="text-sm text-muted-foreground">{code}/USD</p>
         </div>
       </div>
       <div className="text-right">
         <p className="font-medium">${price.toLocaleString()}</p>
         <div
           className={`text-sm flex items-center justify-end ${
-            isPositive ? "text-crypto-green" : "text-crypto-red"
+            isPositive ? "text-green-500" : "text-red-500"
           }`}
         >
           {isPositive ? (

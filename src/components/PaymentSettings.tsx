@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { ChevronRight, CreditCard, Building, Paypal, Plus, Check, Trash2 } from "lucide-react";
+import { ChevronRight, CreditCard, Building, CreditCard as PaymentIcon, Plus, Check, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -140,7 +139,7 @@ const PaymentSettings: React.FC<PaymentSettingsProps> = ({ onBack }) => {
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     {method.type === "card" && <CreditCard size={18} className="text-primary" />}
                     {method.type === "bank" && <Building size={18} className="text-primary" />}
-                    {method.type === "paypal" && <Paypal size={18} className="text-primary" />}
+                    {method.type === "paypal" && <PaymentIcon size={18} className="text-primary" />}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -226,7 +225,7 @@ const PaymentSettings: React.FC<PaymentSettingsProps> = ({ onBack }) => {
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="paypal" id="paypal" />
                 <Label htmlFor="paypal" className="flex items-center cursor-pointer">
-                  <Paypal className="mr-2 h-4 w-4" />
+                  <PaymentIcon className="mr-2 h-4 w-4" />
                   PayPal
                 </Label>
               </div>
