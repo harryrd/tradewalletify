@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import {
   User,
   Shield,
@@ -7,6 +8,8 @@ import {
   HelpCircle,
   LogOut,
   ChevronRight,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -49,6 +52,13 @@ const settingsGroups = [
         toggle: true,
       },
       {
+        id: "theme",
+        icon: Moon,
+        label: "Dark Mode",
+        description: "Toggle between light and dark theme",
+        toggle: true,
+      },
+      {
         id: "help",
         icon: HelpCircle,
         label: "Help & Support",
@@ -60,8 +70,30 @@ const settingsGroups = [
 
 const Settings = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Check if dark mode is enabled on mount
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark");
+    setIsDarkMode(isDark);
+  }, []);
+
+  const toggleDarkMode = () => {
+    if (isDarkMode) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
+    setIsDarkMode(!isDarkMode);
+  };
 
   const handleSectionClick = (sectionId: string) => {
+    if (sectionId === "theme") {
+      toggleDarkMode();
+      return;
+    }
     setActiveSection(sectionId === activeSection ? null : sectionId);
   };
 
@@ -95,17 +127,34 @@ const Settings = () => {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <item.icon size={18} className="text-primary" />
+                        {item.id === "theme" ? (
+                          isDarkMode ? (
+                            <Moon size={18} className="text-primary" />
+                          ) : (
+                            <Sun size={18} className="text-primary" />
+                          )
+                        ) : (
+                          <item.icon size={18} className="text-primary" />
+                        )}
                       </div>
                       <div>
-                        <p className="font-medium">{item.label}</p>
+                        <p className="font-medium">
+                          {item.id === "theme"
+                            ? isDarkMode
+                              ? "Dark Mode"
+                              : "Light Mode"
+                            : item.label}
+                        </p>
                         <p className="text-sm text-muted-foreground">
                           {item.description}
                         </p>
                       </div>
                     </div>
                     {item.toggle ? (
-                      <Switch defaultChecked />
+                      <Switch 
+                        checked={item.id === "theme" ? isDarkMode : true}
+                        onCheckedChange={item.id === "theme" ? toggleDarkMode : undefined}
+                      />
                     ) : (
                       <ChevronRight size={18} className="text-muted-foreground" />
                     )}
